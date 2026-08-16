@@ -1,0 +1,22 @@
+name: MineSkyTags
+version: '1.0.0-BETA'
+main: net.minesky.mineskytags.MineSkyTags
+api-version: '1.21'
+
+authors: ["Drawn"]
+
+folia-supported: true
+
+depend:
+  - "mainframe"
+
+softdepend:
+  - "PlaceholderAPI"
+
+commands:
+  tags:
+    aliases:
+      - "tag"
+  mineskytags:
+    aliases:
+      - "msta"

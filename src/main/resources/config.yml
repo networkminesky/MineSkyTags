@@ -1,0 +1,17 @@
+permission-prefix: "mineskytags.tag."
+custom-font:
+  key: "tags"
+
+tags:
+  rico:
+    name: "Rico"
+    permission: "rico" # ou vazio pra fallback pelo ID mesmo
+    tag:
+      type: "CUSTOM_FONT" # ou VANILLA_FONT
+      char: 'A'
+  nasa:
+    name: "NASA"
+    lore: []
+    tag:
+      type: "CUSTOM_FONT"
+      char: 'B'

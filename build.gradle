@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.21'
+}
+
+group = 'net.minesky.mineskytags'
+version = '1.0.0-BETA'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+
+    maven {
+        url = 'https://repo.extendedclip.com/releases/'
+    }
+
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    paperweight.foliaDevBundle('26.1.2.build.+')
+
+    compileOnly 'me.clip:placeholderapi:2.12.3'
+    compileOnly 'com.github.networkminesky:mainframe:1.4.0-BETA'
+}
+
+def targetJavaVersion = 25
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
