@@ -166,7 +166,7 @@ public class TagsGUI implements Listener {
             player.sendMessage(Component.text("Tag ")
                     .append(LegacyComponentSerializer.legacyAmpersand().deserialize(customTag.name())
                             .append(Component.text(" equipada com sucesso!"))
-                    .color(NamedTextColor.GREEN)));
+                    ).color(NamedTextColor.GREEN));
         }
     }
 
