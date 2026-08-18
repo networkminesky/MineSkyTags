@@ -3,6 +3,7 @@ package net.minesky.mineskytags.gui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minesky.mineskytags.MineSkyTags;
 import net.minesky.mineskytags.entities.CustomTag;
 import net.minesky.mineskytags.entities.TagHandler;
@@ -40,15 +41,9 @@ public class TagsGUI implements Listener {
         ItemStack itemStack = new ItemStack(icon);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setTooltipStyle(NamespacedKey.fromString("raro"));
-        itemMeta.itemName(Component.text(tag.name()).color(NamedTextColor.AQUA));
+        itemMeta.itemName(LegacyComponentSerializer.legacyAmpersand().deserialize(tag.name()).color(NamedTextColor.AQUA));
         itemMeta.getPersistentDataContainer().set(TAG, PersistentDataType.STRING, tag.id());
-        itemMeta.lore(List.of(
-                Component.text("Pré-visualização: ").color(NamedTextColor.GRAY).append(
-                        tag.buildComponent()
-                ).decoration(TextDecoration.ITALIC, false),
-                Component.empty(),
-                accessComponent(player, tag).decoration(TextDecoration.ITALIC, false)
-        ));
+        itemMeta.lore(buildLore(tag, player));
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
@@ -68,6 +63,27 @@ public class TagsGUI implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         TagHandler.refreshFromDatabase(e.getPlayer());
+    }
+
+    private static List<Component> buildLore(CustomTag tag, Player player) {
+        List<Component> components = new ArrayList<>();
+        components.add(Component.text("Pré-visualização: ").color(NamedTextColor.GRAY).append(
+                tag.buildComponent()).decoration(TextDecoration.ITALIC, false));
+
+        LegacyComponentSerializer legacy = LegacyComponentSerializer.legacyAmpersand();
+
+        if(!tag.lore().isEmpty()) {
+            components.add(Component.empty());
+            for(String line : tag.lore()) {
+                components.add(legacy.deserialize(line).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+            }
+        }
+
+        components.add(Component.empty());
+
+        components.add(accessComponent(player, tag).decoration(TextDecoration.ITALIC, false));
+
+        return components;
     }
 
     private static Component accessComponent(Player player, CustomTag tag) {
@@ -147,8 +163,10 @@ public class TagsGUI implements Listener {
                     .color(NamedTextColor.RED));
         } else {
             TagHandler.setEquippedTag(player, customTag);
-            player.sendMessage(Component.text("Tag "+customTag.name()+" equipada com sucesso!")
-                    .color(NamedTextColor.GREEN));
+            player.sendMessage(Component.text("Tag ")
+                    .append(LegacyComponentSerializer.legacyAmpersand().deserialize(customTag.name())
+                            .append(Component.text(" equipada com sucesso!"))
+                    .color(NamedTextColor.GREEN)));
         }
     }
 

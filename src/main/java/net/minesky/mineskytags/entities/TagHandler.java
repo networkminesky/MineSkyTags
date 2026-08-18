@@ -13,7 +13,7 @@ import java.util.*;
 
 public class TagHandler {
 
-    public static final Set<CustomTag> registeredTags = new HashSet<>();
+    public static final List<CustomTag> registeredTags = new ArrayList<>();
     public static final HashMap<UUID, CustomTag> CACHED_TAGS = new HashMap<>();
 
     public static Key getCustomFontKey() {
