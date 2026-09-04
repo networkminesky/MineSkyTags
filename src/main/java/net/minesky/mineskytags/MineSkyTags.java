@@ -2,6 +2,7 @@ package net.minesky.mineskytags;
 
 import net.minesky.mineskytags.commands.CommandHandler;
 import net.minesky.mineskytags.entities.TagHandler;
+import net.minesky.mineskytags.events.JoinEvents;
 import net.minesky.mineskytags.gui.TagsGUI;
 import net.minesky.mineskytags.hook.PAPIHook;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public final class MineSkyTags extends JavaPlugin {
             TagHandler.refreshFromDatabase(player);
         }
 
+        this.getServer().getPluginManager().registerEvents(new JoinEvents(), this);
         this.getServer().getPluginManager().registerEvents(new TagsGUI(), this);
     }
 
