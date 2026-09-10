@@ -60,11 +60,6 @@ public class TagsGUI implements Listener {
         return itemStack;
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        TagHandler.refreshFromDatabase(e.getPlayer());
-    }
-
     private static List<Component> buildLore(CustomTag tag, Player player) {
         List<Component> components = new ArrayList<>();
         components.add(Component.text("Pré-visualização: ").color(NamedTextColor.GRAY).append(

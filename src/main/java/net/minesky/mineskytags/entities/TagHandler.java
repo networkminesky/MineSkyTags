@@ -64,7 +64,11 @@ public class TagHandler {
     public static void refreshFromDatabase(Player player) {
         MainframeHook.getDatabaseCurrentTag(player, tag -> {
             getById(tag).ifPresent(customTag -> {
-                CACHED_TAGS.put(player.getUniqueId(), customTag);
+                if(!player.hasPermission(customTag.getPermission())) {
+                    clearEquippedTag(player);
+                } else {
+                    CACHED_TAGS.put(player.getUniqueId(), customTag);
+                }
             });
         });
     }

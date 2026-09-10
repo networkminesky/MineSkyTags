@@ -8,13 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinEvents implements Listener {
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        final Player p = e.getPlayer();
-
-        CustomTag tag = TagHandler.getEquippedCustomTag(p);
-        if(tag != null && !p.hasPermission(tag.getPermission())) {
-            TagHandler.clearEquippedTag(p);
-        }
+        TagHandler.refreshFromDatabase(e.getPlayer());
     }
+
 }
